@@ -5,7 +5,7 @@
         <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
             <!-- Footer Logo -->
             <div class="flex flex-col items-start">
-                <img src="{{ asset('assets/img/logo.png') }}" alt="Logo" class="w-[130px] mb-4">
+                <img src="{{ asset('assets/img/Logo.png') }}" alt="Logo" class="w-[130px] mb-4">
                 <p class="text-gray-400 text-sm">Bringing you the best of iftar and sohour recipes.</p>
             </div>
 

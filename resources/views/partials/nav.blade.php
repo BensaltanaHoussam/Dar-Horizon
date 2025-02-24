@@ -3,7 +3,7 @@
 <div class="bg-black shadow px-8 ">
     <div class="container mx-auto px-4">
         <div class="flex items-center justify-between py-4">
-            <img class="w-[130px]" src="{{ asset('assets/img/logo.png') }}" alt="Background Image">
+            <img class="w-[130px]" src="{{ asset('assets/img/Logo.png') }}" alt="Background Image">
 
             <div class="hidden sm:flex sm:gap-8 sm:items-center">
                 <a href="/" class="text-white py-2 px-4  font-semibold hover:text-yellow-600 mr-4 
