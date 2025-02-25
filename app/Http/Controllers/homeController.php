@@ -8,9 +8,11 @@ use Illuminate\Http\Request;
 
 class homeController extends Controller
 {
-   public function index(Request $request)
+   public function adminIndex(Request $request)
    {
-      return view('hello');
+      return view('admin.dashboard');
    }
 
 }
+
+
