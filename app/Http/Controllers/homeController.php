@@ -10,7 +10,7 @@ class homeController extends Controller
 {
    public function adminIndex(Request $request)
    {
-      return view('admin.dashboard');
+      return view('admin.adminDashboard');
    }
 
 }

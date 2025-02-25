@@ -24,8 +24,8 @@ Route::middleware('auth')->group(function () {
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
 
-Route::get('admin/dashboard',[homeController::class,'adminIndex']);
-Route::get('owner/dashboard',[ownerController::class,'ownerIndex']);
-Route::get('tourist/dashboard',[touristController::class,'touristIndex']);
+Route::get('admin/adminDashboard',[homeController::class,'adminIndex'])->middleware(['auth','admin']);
+Route::get('owner/ownerDashboard',[ownerController::class,'ownerIndex']);
+Route::get('tourist/touristDashboard',[touristController::class,'touristIndex']);
 
 require __DIR__.'/auth.php';

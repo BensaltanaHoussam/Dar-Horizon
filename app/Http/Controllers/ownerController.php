@@ -8,6 +8,6 @@ class ownerController extends Controller
 {
     public function ownerIndex(Request $request)
     {
-       return view('owner.dashboard');
+       return view('owner.ownerDashboard');
     }
 }

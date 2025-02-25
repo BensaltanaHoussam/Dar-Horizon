@@ -8,6 +8,6 @@ class touristController extends Controller
 {
     public function touristIndex(Request $request)
     {
-       return view('tourist.dashboard');
+       return view('tourist.touristDashboard');
     }
 }
