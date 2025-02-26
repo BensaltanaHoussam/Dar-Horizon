@@ -16,7 +16,16 @@
     </head>
     <body class="font-sans antialiased">
         <div class="min-h-screen bg-gray-100">
-            @include('layouts.navigation')
+            <!-- Conditionally include navigation based on role -->
+            @auth
+                @if(auth()->user()->role == 'admin')
+                    @include('layouts.navigation.admin')
+                @elseif(auth()->user()->role == 'owner')
+                    @include('layouts.navigation.owner')
+                @elseif(auth()->user()->role == 'tourist')
+                    @include('layouts.navigation.tourist')
+                @endif
+            @endauth
 
             <!-- Page Heading -->
             @isset($header)

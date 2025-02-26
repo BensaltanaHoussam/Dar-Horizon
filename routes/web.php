@@ -3,11 +3,12 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\homeController;
 use App\Http\Controllers\ownerController;
+use App\Http\Controllers\ListingController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\touristController;
 
 Route::get('/', function () {
-    return view('welcome');
+    return view('auth/login');
 });
 
 Route::get('/hello', function () {
@@ -24,8 +25,19 @@ Route::middleware('auth')->group(function () {
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
 
-Route::get('admin/adminDashboard',[homeController::class,'adminIndex'])->middleware(['auth','admin']);
-Route::get('owner/ownerDashboard',[ownerController::class,'ownerIndex']);
-Route::get('tourist/touristDashboard',[touristController::class,'touristIndex']);
+Route::get('admin/adminDashboard', [homeController::class, 'adminIndex'])->middleware(['auth', 'admin']);
+Route::get('tourist/touristDashboard', [touristController::class, 'touristIndex']);
 
-require __DIR__.'/auth.php';
+
+
+
+Route::middleware('auth')->group(function () {
+    Route::get('/owner/my-posts', [ownerController::class, 'myPosts'])->name('owner.posts');
+    Route::get('owner/ownerDashboard', [ownerController::class, 'ownerIndex']);
+    Route::get('owner/addproperty', [ListingController::class, 'create'])->name('listings.create');
+    Route::post('owner/addproperty', [ListingController::class, 'store'])->name('listings.store');
+
+
+});
+
+require __DIR__ . '/auth.php';

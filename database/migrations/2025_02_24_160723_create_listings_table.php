@@ -12,16 +12,18 @@ return new class extends Migration {
     {
         Schema::create('listings', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('owner_id')->constrained('users')->onDelete('cascade'); 
+            $table->foreignId('owner_id')->constrained('users')->onDelete('cascade');
             $table->string('title');
             $table->text('description');
             $table->string('location');
-            $table->decimal('price', 10, 2); 
+            $table->decimal('price', 10, 2);
             $table->date('available_from');
             $table->date('available_until');
+            $table->foreignId('country_id')->constrained('countries')->onDelete('cascade'); // Ajout de la colonne country_id
             $table->timestamps();
         });
     }
+
 
     /**
      * Reverse the migrations.

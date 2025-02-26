@@ -2,17 +2,15 @@
 
 namespace App\Http\Controllers;
 
-
-
 use Illuminate\Http\Request;
 
 class homeController extends Controller
 {
-   public function adminIndex(Request $request)
-   {
-      return view('admin.adminDashboard');
-   }
-
+    public function adminIndex(Request $request)
+    {
+        return view('admin.adminDashboard');
+    }
 }
+
 
 

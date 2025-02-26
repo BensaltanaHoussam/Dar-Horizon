@@ -10,4 +10,10 @@ class ownerController extends Controller
     {
        return view('owner.ownerDashboard');
     }
+
+    public function myPosts()
+    {
+        
+        return view('owner.myPost', );
+    }
 }

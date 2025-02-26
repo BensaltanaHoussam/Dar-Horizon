@@ -10,9 +10,12 @@
             <!-- Center: Navigation Links (Hidden on mobile) -->
             <div class="hidden space-x-6 sm:flex">
                 <x-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')">
-                    Dashboard
+                    Home
                 </x-nav-link>
-                <x-nav-link href="#">My posts</x-nav-link>
+                <x-nav-link :href="route('owner.posts')" :active="request()->routeIs('owner.posts')">
+                    Listings
+                </x-nav-link>
+                
                 <x-nav-link href="#">Services</x-nav-link>
                 <x-nav-link href="#">Contact</x-nav-link>
             </div>
