@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Listing;
 use Illuminate\Http\Request;
 
 class ownerController extends Controller
@@ -13,7 +14,11 @@ class ownerController extends Controller
 
     public function myPosts()
     {
-        
-        return view('owner.myPost', );
+        $listings = Listing::where('owner_id', auth()->id())->get(); 
+
+        return view('owner.myPost', compact('listings'));
     }
+
+
+
 }
