@@ -1,7 +1,8 @@
-<nav x-data="{ open: false }" class="bg-gray-900 py-2 text-white border-b border-gray-700">
+<nav x-data="{ open: false }" class="bg-black py-2 text-white border-b border-gray-700">
     <!-- Primary Navigation Menu -->
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div class="flex justify-between h-16 items-center">
+
             <!-- Left: Logo -->
             <div class="flex items-center">
               <img class="w-[120px]" src="{{ asset('assets/img/Logo.png') }}" alt="logo">
@@ -15,7 +16,6 @@
                 <x-nav-link :href="route('owner.posts')" :active="request()->routeIs('owner.posts')">
                     Listings
                 </x-nav-link>
-                
                 <x-nav-link href="#">Services</x-nav-link>
                 <x-nav-link href="#">Contact</x-nav-link>
             </div>

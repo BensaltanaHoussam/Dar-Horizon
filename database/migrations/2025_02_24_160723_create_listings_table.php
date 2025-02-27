@@ -19,7 +19,8 @@ return new class extends Migration {
             $table->decimal('price', 10, 2);
             $table->date('available_from');
             $table->date('available_until');
-            $table->foreignId('country_id')->constrained('countries')->onDelete('cascade'); // Ajout de la colonne country_id
+            $table->enum('country', ['Portugal', 'Morocco', 'Spain']); 
+            $table->string('image')->nullable();
             $table->timestamps();
         });
     }

@@ -11,7 +11,7 @@
             <!-- Form Card -->
             <div class="bg-white rounded-2xl shadow-lg p-6 md:p-10">
                 <!-- The form posts to the 'listings.store' route -->
-                <form action="{{ route('listings.store') }}" method="POST" class="space-y-8">
+                <form action="{{ route('listings.store') }}" method="POST" enctype="multipart/form-data" class="space-y-8">
                     @csrf <!-- CSRF token for security -->
                     
                     <!-- Title -->
@@ -72,6 +72,11 @@
                             <option value="Morocco">Morocco</option>
                             <option value="Spain">Spain</option>
                         </select>
+                    </div>
+
+                    <div class="space-y-2">
+                    <label for="image">Upload Image</label>
+                    <input type="file" name="image" id="image">
                     </div>
 
                     <!-- Submit Button -->
