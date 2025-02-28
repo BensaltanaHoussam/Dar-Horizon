@@ -26,16 +26,32 @@ Route::middleware('auth')->group(function () {
 });
 
 Route::get('admin/adminDashboard', [homeController::class, 'adminIndex'])->middleware(['auth', 'admin']);
-Route::get('tourist/touristDashboard', [touristController::class, 'touristIndex']);
+
 
 
 
 
 Route::middleware('auth')->group(function () {
+
+    Route::get('/tourist/touristDashboard', [touristController::class, 'touristIndex'])->name('tourist.listings');
+
+
+
+});
+
+
+
+Route::middleware('auth')->group(function () {
     Route::get('/owner/my-posts', [ownerController::class, 'myPosts'])->name('owner.posts');
-    Route::get('owner/ownerDashboard', [ownerController::class, 'ownerIndex']);
+    Route::get('owner/ownerDashboard', [ownerController::class, 'ownerIndex'])->name('owner.dashboard');
     Route::get('owner/addproperty', [ListingController::class, 'create'])->name('listings.create');
     Route::post('owner/addproperty', [ListingController::class, 'store'])->name('listings.store');
+    Route::delete('/owner/listing/{listing}', [ListingController::class, 'destroy'])->name('listings.destroy');
+    Route::get('/owner/listing/{listing}/edit', [ListingController::class, 'edit'])->name('listings.edit');
+    Route::put('/listings/{listing}', [ListingController::class, 'update'])->name('listings.update');
+
+
+
 
 
 });

@@ -21,4 +21,10 @@ class Listing extends Model
         'image',
         'owner_id',
     ];
+
+
+    protected $dates = [
+        'available_from',
+        'available_until',
+    ];
 }

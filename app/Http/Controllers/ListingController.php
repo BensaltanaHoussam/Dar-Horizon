@@ -2,12 +2,16 @@
 
 namespace App\Http\Controllers;
 
+use Carbon\Carbon; 
 use App\Models\Listing;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
+
 
 class ListingController extends Controller
 {
 
+    
 
 
     public function store(Request $request)
@@ -46,5 +50,87 @@ class ListingController extends Controller
 
         return redirect()->route('owner.posts')->with('success', 'Listing created successfully!');
 
+    }
+
+
+    public function destroy(Listing $listing)
+    {
+
+        $listing->delete();
+
+
+        return redirect()->route('owner.posts')->with('success', 'Listing deleted successfully');
+    }
+
+
+    public function edit(Listing $listing)
+    {
+        $listing->available_from = Carbon::parse($listing->available_from);
+        $listing->available_until = Carbon::parse($listing->available_until);
+        return view('owner.listings.edit', compact('listing'));
+    }
+
+
+    public function update(Request $request, Listing $listing)
+    {
+
+
+ 
+        $validatedData = $request->validate([
+            'title' => 'required|string|max:255',
+            'description' => 'required|string',
+            'location' => 'required|string|max:255',
+            'price' => 'required|numeric',
+            'available_from' => 'required|date',
+            'available_until' => 'required|date',
+            'country' => 'required|in:Portugal,Morocco,Spain',
+            'image' => 'nullable|image|mimes:jpg,jpeg,png,gif|max:2048',
+        ]);
+
+
+
+        if ($request->hasFile('image')) {
+
+            if ($listing->image) {
+                Storage::delete('public/' . $listing->image);
+            }
+
+
+            $imagePath = $request->file('image')->store('listings', 'public');
+            $validatedData['image'] = $imagePath;
+        }
+
+        $listing->update($validatedData);
+        return redirect()->route('owner.posts')->with('success', 'Listing updated successfully!');
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    public function show($id)
+    {
+        $listing = Listing::findOrFail($id);
+
+        $availableFrom = $listing->available_from->toDateString();
+        $availableUntil = $listing->available_until->toDateString();
+
+        return view('listing.show', compact('listing', 'availableFrom', 'availableUntil'));
     }
 }
