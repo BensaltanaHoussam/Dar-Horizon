@@ -10,7 +10,7 @@ class touristController extends Controller
     public function touristIndex(Request $request)
     {
 
-        $perPage = $request->input('per_page', 10);
+        $perPage = $request->input('per_page', default: 10);
 
         if (!in_array($perPage, [4, 10, 25])) {
             $perPage = 10;
@@ -20,10 +20,6 @@ class touristController extends Controller
         return view('tourist.touristDashboard', compact('listings', 'perPage'));
 
     }
-
-
-
-
 
     public function touristSearch(Request $request)
     {

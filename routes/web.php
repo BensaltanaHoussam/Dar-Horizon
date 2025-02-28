@@ -26,7 +26,13 @@ Route::middleware('auth')->group(function () {
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
 
-Route::get('admin/adminDashboard', [homeController::class, 'adminIndex'])->middleware(['auth', 'admin']);
+
+Route::middleware('auth')->group(function () {
+    Route::get('admin/adminDashboard', [homeController::class, 'adminIndex'])->middleware(['auth', 'admin'])->name('admin.adminDashboard');
+    Route::delete('/admin/listings/{listing}', [HomeController::class, 'deleteListing'])->name('admin.listings.delete');
+
+});
+
 
 
 
@@ -37,7 +43,7 @@ Route::middleware('auth')->group(function () {
 
     Route::get('/tourist/touristDashboard', [touristController::class, 'touristIndex'])->name('tourist.listings');
     Route::get('/tourist/favorites', [FavoriteController::class, 'index'])->name('tourist.favorites');
-    Route::match(['get', 'post'],'/tourist/search', [TouristController::class, 'touristSearch'])->name('search');
+    Route::match(['get', 'post'], '/tourist/search', [TouristController::class, 'touristSearch'])->name('search');
     Route::post('/favorites/{listing}', [FavoriteController::class, 'store'])->name('favorites.store');
     Route::delete('/favorites/{listing}', [FavoriteController::class, 'destroy'])->name('favorites.destroy');
 
