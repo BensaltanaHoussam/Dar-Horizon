@@ -12,31 +12,59 @@
                     to fully experience the 2030 World Cup.</p>
 
                 <div class="bg-transparent border-white  border rounded-lg shadow-xl p-6 mb-10">
-                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                        <div class="space-y-2">
-                            <label class="block text-white font-medium">City</label>
-                            <input type="text" placeholder="Enter the city"
-                                class="w-full text-black p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-teal-500 focus:border-teal-500">
+                    <form method="GET" action="{{ route('search') }}">
+                        @csrf
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            <div class="space-y-2">
+                                <label class="block text-white font-medium">Country</label>
+                                <input type="text" name="country" placeholder="Enter the country"
+                                    class="w-full text-black p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-teal-500 focus:border-teal-500">
+                            </div>
+                            <div class="space-y-2">
+                                <label class="block text-white font-medium">Available From</label>
+                                <input type="date" name="available_from"
+                                    class="w-full p-3 border text-black border-gray-300 rounded-lg focus:ring-2 focus:ring-teal-500 focus:border-teal-500">
+                            </div>
                         </div>
-                        <div class="space-y-2">
-                            <label class="block text-white font-medium">Availability Date</label>
-                            <input type="date"
-                                class="w-full p-3 border text-black border-gray-300 rounded-lg focus:ring-2 focus:ring-teal-500 focus:border-teal-500">
-                        </div>
-                    </div>
+                        <button type="submit" class="bg-teal-500 text-white p-3 rounded-lg">Search</button>
+                    </form>
 
-                    <div class="mt-6">
-                        <button
-                            class="w-full bg-black border hover:bg-teal-700 text-white py-3 px-6 rounded-lg transition flex items-center justify-center">
-                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" fill="none" viewBox="0 0 24 24"
-                                stroke="currentColor">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                    d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
-                            </svg>
-                            Search
-                        </button>
+                    <div>
+                        <h2 class="text-white">Search Results</h2>
+                        @if(request()->has('country') || request()->has('available_from'))
+                            @if($listings->isEmpty())
+                                <p class="text-white">No listings found.</p>
+                            @else
+                                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                    @foreach ($listings as $listing)
+                                        <div class="border border-gray-300 p-4 rounded-lg">
+                                            <h3 class="font-medium">{{ $listing->title }}</h3>
+                                            <p>{{ $listing->country }}</p>
+                                            <p>Available from:
+                                                @if($listing->available_from)
+                                                    {{ \Carbon\Carbon::parse($listing->available_from)->format('d/m/Y') }}
+                                                @else
+                                                    Not available
+                                                @endif
+                                            </p>
+
+
+                                            <form action="{{ route('favorites.store', $listing->id) }}" method="POST">
+                                                @csrf
+                                                <button type="submit" class="bg-teal-500 text-white p-2 rounded-lg">Add to
+                                                    Favorites</button>
+                                            </form>
+                                        </div>
+                                    @endforeach
+                                </div>
+                            @endif
+                        @else
+                            <p class="text-white">Please enter search criteria.</p>
+                        @endif
                     </div>
                 </div>
+
+
 
                 <div class="flex flex-wrap -mx-2">
                     <div class="px-2 w-full sm:w-auto mb-4">
@@ -76,7 +104,7 @@
 
 
 
-    <!-- About Section -->
+
     <!-- About Section -->
     <section id="about" class="py-24 px-4 bg-gradient-to-br from-gray-50 to-gray-100">
         <div class="container mx-auto max-w-7xl">
@@ -253,7 +281,7 @@
         <!-- Listings Grid -->
         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
             @foreach($listings as $listing)
-                    <div
+                <div
                     class="bg-white rounded-xl shadow-md overflow-hidden transition-all duration-300 hover:shadow-xl hover:translate-y-[-4px] group">
                     <div class="relative h-56 bg-gray-200 overflow-hidden">
                         <img src="{{ asset('storage/' . $listing->image) }}" alt="{{ $listing->title }}"
@@ -262,14 +290,30 @@
                             class="absolute top-3 right-3 bg-teal-500 text-white px-3 py-1.5 rounded-lg text-sm font-semibold shadow-md">
                             €{{ number_format($listing->price, 2) }} / night
                         </div>
-                        <button
-                            class="absolute top-3 left-3 bg-white/80 backdrop-blur-sm hover:bg-white text-gray-700 hover:text-red-500 p-2 rounded-full shadow-md transition-colors duration-200">
-                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24"
-                                stroke="currentColor">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                    d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" />
-                            </svg>
-                        </button>
+                        <form action="{{ route('favorites.store', $listing->id) }}" method="POST">
+                            @csrf
+                            @if(auth()->user()->favorites->contains('listing_id', $listing->id))
+
+                                <button type="submit"
+                                    class="absolute top-3 left-3 bg-white/80 backdrop-blur-sm hover:bg-white text-gray-700 hover:text-red-500 p-2 rounded-full shadow-md transition-colors duration-200">
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-red-500" fill="none"
+                                        viewBox="0 0 24 24" stroke="currentColor">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                            d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" />
+                                    </svg>
+                                </button>
+                            @else
+
+                                <button type="submit"
+                                    class="absolute top-3 left-3 bg-white/80 backdrop-blur-sm hover:bg-white text-gray-700 hover:text-red-500 p-2 rounded-full shadow-md transition-colors duration-200">
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24"
+                                        stroke="currentColor">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                            d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" />
+                                    </svg>
+                                </button>
+                            @endif
+                        </form>
                     </div>
                     <div class="p-5">
                         <h3 class="font-bold text-xl mb-2 text-gray-800">{{ $listing->title }}</h3>

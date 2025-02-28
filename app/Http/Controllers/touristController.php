@@ -18,4 +18,28 @@ class touristController extends Controller
         $listings = Listing::paginate($perPage);
         return view('tourist.touristDashboard', compact('listings', 'perPage'));
     }
+
+
+
+
+
+
+
+
+    public function touristSearch(Request $request)
+    {
+        $query = Listing::query();
+
+        if ($request->has('country') && !empty($request->country)) {
+            $query->where('country', 'like', '%' . $request->country . '%');
+        }
+
+        if ($request->has('available_date') && !empty($request->available_date)) {
+            $query->whereDate('available_from', '=', $request->available_date);
+        }
+
+        $listings = $query->get();
+
+        return view('tourist.touristDashboard', compact('listings'));
+    }
 }

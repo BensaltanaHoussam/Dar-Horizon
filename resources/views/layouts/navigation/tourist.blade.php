@@ -9,10 +9,10 @@
 
             <!-- Center: Navigation Links (Hidden on mobile) -->
             <div class="hidden space-x-6 sm:flex">
-                <x-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')">
-                    Dashboard
+                <x-nav-link :href="route('tourist.listings')" :active="request()->routeIs('tourist.listings')">
+                    Home
                 </x-nav-link>
-                <x-nav-link href="#">My posts</x-nav-link>
+                <x-nav-link :href="route('tourist.favorites')" :active="request()->routeIs('tourist.favorites')">My Favorites</x-nav-link>
                 <x-nav-link href="#">Services</x-nav-link>
                 <x-nav-link href="#">Contact</x-nav-link>
             </div>

@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\FavoriteController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\homeController;
 use App\Http\Controllers\ownerController;
@@ -33,7 +34,13 @@ Route::get('admin/adminDashboard', [homeController::class, 'adminIndex'])->middl
 
 Route::middleware('auth')->group(function () {
 
+
     Route::get('/tourist/touristDashboard', [touristController::class, 'touristIndex'])->name('tourist.listings');
+    Route::get('/tourist/favorites', [FavoriteController::class, 'index'])->name('tourist.favorites');
+    Route::match(['get', 'post'],'/tourist/search', [TouristController::class, 'touristSearch'])->name('search');
+    Route::post('/favorites/{listing}', [FavoriteController::class, 'store'])->name('favorites.store');
+    Route::delete('/favorites/{listing}', [FavoriteController::class, 'destroy'])->name('favorites.destroy');
+
 
 
 
