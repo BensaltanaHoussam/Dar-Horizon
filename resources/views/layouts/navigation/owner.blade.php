@@ -1,19 +1,21 @@
-<nav x-data="{ open: false }" class="bg-teal-700 py-2 text-white border-b border-gray-700">
+<nav x-data="{ open: false }" class="bg-black py-2 text-white border-b border-gray-800">
     <!-- Primary Navigation Menu -->
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div class="flex justify-between h-16 items-center">
 
             <!-- Left: Logo -->
             <div class="flex items-center">
-              <img class="w-[120px]" src="{{ asset('assets/img/Logo.png') }}" alt="logo">
+              <img class="w-[120px] filter brightness-0 invert" src="{{ asset('assets/img/Logo.png') }}" alt="logo">
             </div>
 
             <!-- Center: Navigation Links (Hidden on mobile) -->
             <div class="hidden space-x-6 sm:flex">
-                <x-nav-link :href="route('owner.dashboard')" :active="request()->routeIs('owner.dashboard')">
+                <x-nav-link :href="route('owner.dashboard')" :active="request()->routeIs('owner.dashboard')"
+                    class="text-white hover:text-white transition-colors duration-200 {{ request()->routeIs('tourist.favorites') ? 'text-blue-500' : '' }}">
                     Home
                 </x-nav-link>
-                <x-nav-link :href="route('owner.posts')" :active="request()->routeIs('owner.posts')">
+                <x-nav-link :href="route('owner.posts')" :active="request()->routeIs('owner.posts')"
+                    class="text-white hover:text-white transition-colors duration-200 {{ request()->routeIs('tourist.favorites') ? 'text-blue-500' : '' }}">
                     Listings
                 </x-nav-link>
                 <x-nav-link href="#">Services</x-nav-link>
@@ -21,24 +23,24 @@
             </div>
 
             <!-- Right: User Dropdown -->
-            <div class="hidden sm:flex items-center space-x-4">
+            <div class="hidden sm:flex items-center space-x-6">
                 @auth
                     <div class="relative" x-data="{ dropdownOpen: false }">
-                        <button @click="dropdownOpen = !dropdownOpen" class="flex items-center space-x-2 focus:outline-none">
-                            <span>{{ Auth::user()->name }}</span>
-                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <button @click="dropdownOpen = !dropdownOpen" class="flex items-center space-x-2 focus:outline-none group">
+                            <span class="text-gray-300 group-hover:text-white transition-colors duration-200">{{ Auth::user()->name }}</span>
+                            <svg class="w-5 h-5 text-gray-400 group-hover:text-white transition-colors duration-200" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
                             </svg>
                         </button>
                         <!-- Dropdown Menu -->
                         <div x-show="dropdownOpen" @click.away="dropdownOpen = false"
-                            class="absolute right-0 mt-2 w-48 bg-white text-black rounded-md shadow-lg z-50">
-                            <x-dropdown-link :href="route('profile.edit')">
+                            class="absolute right-0 mt-2 w-48 bg-gray-900 text-gray-300 rounded-md shadow-lg border border-gray-800 z-50">
+                            <x-dropdown-link :href="route('profile.edit')" class="px-4 py-2 block hover:bg-gray-800 transition-colors duration-200">
                                 Profile
                             </x-dropdown-link>
                             <form method="POST" action="{{ route('logout') }}">
                                 @csrf
-                                <x-dropdown-link :href="route('logout')"
+                                <x-dropdown-link :href="route('logout')" class="px-4 py-2 block hover:bg-gray-800 transition-colors duration-200"
                                     onclick="event.preventDefault(); this.closest('form').submit();">
                                     Log Out
                                 </x-dropdown-link>
@@ -46,8 +48,8 @@
                         </div>
                     </div>
                 @else
-                    <a href="{{ route('login') }}" class="hover:text-gray-300">Login</a>
-                    <a href="{{ route('register') }}" class="bg-blue-600 px-4 py-2 rounded-md hover:bg-blue-700">Sign Up</a>
+                    <a href="{{ route('login') }}" class="text-gray-300 hover:text-white transition-colors duration-200">Login</a>
+                    <a href="{{ route('register') }}" class="bg-white text-black px-5 py-2 rounded-md hover:bg-gray-200 transition-colors duration-200">Sign Up</a>
                 @endauth
             </div>
 
@@ -66,30 +68,42 @@
     <!-- Responsive Navigation Menu -->
     <div x-show="open" class="sm:hidden bg-gray-900">
         <div class="pt-2 pb-3 space-y-1">
-            <x-responsive-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')">
-                Dashboard
+            <x-responsive-nav-link :href="route('tourist.listings')" :active="request()->routeIs('tourist.listings')"
+                class="block px-4 py-2 text-gray-300 hover:bg-gray-800 hover:text-white transition-colors duration-200">
+                Home
             </x-responsive-nav-link>
-            <x-responsive-nav-link href="#">My posts</x-responsive-nav-link>
-            <x-responsive-nav-link href="#">Services</x-responsive-nav-link>
-            <x-responsive-nav-link href="#">Contact</x-responsive-nav-link>
+            <x-responsive-nav-link :href="route('tourist.favorites')" :active="request()->routeIs('tourist.favorites')"
+                class="block px-4 py-2 text-gray-300 hover:bg-gray-800 hover:text-white transition-colors duration-200">
+                My Favorites
+            </x-responsive-nav-link>
+            <x-responsive-nav-link href="#"
+                class="block px-4 py-2 text-gray-300 hover:bg-gray-800 hover:text-white transition-colors duration-200">
+                Services
+            </x-responsive-nav-link>
+            <x-responsive-nav-link href="#"
+                class="block px-4 py-2 text-gray-300 hover:bg-gray-800 hover:text-white transition-colors duration-200">
+                Contact
+            </x-responsive-nav-link>
         </div>
 
         <!-- Responsive Settings Options -->
         @auth
-            <div class="pt-4 pb-1 border-t border-gray-700">
+            <div class="pt-4 pb-1 border-t border-gray-800">
                 <div class="px-4">
                     <div class="font-medium text-base text-white">{{ Auth::user()->name }}</div>
                     <div class="font-medium text-sm text-gray-400">{{ Auth::user()->email }}</div>
                 </div>
 
                 <div class="mt-3 space-y-1">
-                    <x-responsive-nav-link :href="route('profile.edit')">
+                    <x-responsive-nav-link :href="route('profile.edit')"
+                        class="block px-4 py-2 text-gray-300 hover:bg-gray-800 hover:text-white transition-colors duration-200">
                         Profile
                     </x-responsive-nav-link>
 
                     <form method="POST" action="{{ route('logout') }}">
                         @csrf
                         <x-responsive-nav-link :href="route('logout')"
+                            class="block px-4 py-2 text-gray-300 hover:bg-gray-800 hover:text-white transition-colors duration-200"
                             onclick="event.preventDefault(); this.closest('form').submit();">
                             Log Out
                         </x-responsive-nav-link>
