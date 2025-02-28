@@ -9,7 +9,7 @@ class touristController extends Controller
 {
     public function touristIndex(Request $request)
     {
-    
+
         $perPage = $request->input('per_page', 10);
 
         if (!in_array($perPage, [4, 10, 25])) {
@@ -18,11 +18,8 @@ class touristController extends Controller
 
         $listings = Listing::paginate($perPage);
         return view('tourist.touristDashboard', compact('listings', 'perPage'));
-       
+
     }
-
-
-
 
 
 
@@ -36,8 +33,17 @@ class touristController extends Controller
             $query->where('country', 'like', '%' . $request->country . '%');
         }
 
-        $listings = $query->get();
+        if ($request->has('price') && !empty($request->price)) {
+            $query->where('price', '<=', $request->price);
+        }
 
-        return view('tourist.touristDashboard', compact('listings'));
+
+        $perPage = $request->input('per_page', 10);
+        $listings = $query->paginate($perPage);
+
+        return view('tourist.touristDashboard', compact('listings','perPage'));
     }
+
+
+
 }

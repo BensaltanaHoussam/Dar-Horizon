@@ -20,14 +20,20 @@
                                 <input type="text" name="country" placeholder="Enter the country"
                                     class="w-full text-black p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-teal-500 focus:border-teal-500">
                             </div>
-                    
+                            <div class="space-y-2">
+                                <label class="block text-white font-medium">Max Price</label>
+                                <input type="number" name="price" placeholder="Enter the max price"
+                                    class="w-full text-black p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-teal-500 focus:border-teal-500">
+                            </div>
+
+                            <input type="hidden" name="per_page" value="{{ $perPage }}">
                         </div>
                         <button type="submit" class="bg-teal-500 text-white p-3 rounded-lg">Search</button>
                     </form>
 
                     <div>
                         <h2 class="text-white">Search Results</h2>
-                        @if(request()->has('country'))
+                        @if(request()->has('country') || request()->has('price'))
                             @if($listings->isEmpty())
                                 <p class="text-white">No listings found.</p>
                             @else
@@ -36,18 +42,12 @@
                                         <div class="border border-gray-300 p-4 rounded-lg">
                                             <h3 class="font-medium">{{ $listing->title }}</h3>
                                             <p>{{ $listing->country }}</p>
-                                            <p>Available from:
-                                                @if($listing->available_from)
-                                                    {{ \Carbon\Carbon::parse($listing->available_from)->format('d/m/Y') }}
-                                                @else
-                                                    Not available
-                                                @endif
-                                            </p>
-
-
+                                            <p>Price: €{{ $listing->price }}</p>
+                                            <p>Available from: {{ $listing->available_from }}</p>
+                                            <p>Available until: {{ $listing->available_until }}</p>
                                             <form action="{{ route('favorites.store', $listing->id) }}" method="POST">
                                                 @csrf
-                                                <button type="submit" class="bg-teal-500 text-white p-2 rounded-lg">Add to
+                                                <button type="submit" class="bg-blue-500 text-white p-2 rounded-lg">Add to
                                                     Favorites</button>
                                             </form>
                                         </div>
@@ -58,6 +58,8 @@
                             <p class="text-white">Please enter search criteria.</p>
                         @endif
                     </div>
+
+
                 </div>
 
 
@@ -103,6 +105,9 @@
 
     <!-- About Section -->
     <section id="about" class="py-24 px-4 bg-gradient-to-br from-gray-50 to-gray-100">
+
+
+
         <div class="container mx-auto max-w-7xl">
             <div class="flex flex-col md:flex-row items-center gap-16">
                 <!-- Left Content -->
