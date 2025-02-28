@@ -9,6 +9,7 @@ class touristController extends Controller
 {
     public function touristIndex(Request $request)
     {
+    
         $perPage = $request->input('per_page', 10);
 
         if (!in_array($perPage, [4, 10, 25])) {
@@ -17,6 +18,7 @@ class touristController extends Controller
 
         $listings = Listing::paginate($perPage);
         return view('tourist.touristDashboard', compact('listings', 'perPage'));
+       
     }
 
 
@@ -32,10 +34,6 @@ class touristController extends Controller
 
         if ($request->has('country') && !empty($request->country)) {
             $query->where('country', 'like', '%' . $request->country . '%');
-        }
-
-        if ($request->has('available_date') && !empty($request->available_date)) {
-            $query->whereDate('available_from', '=', $request->available_date);
         }
 
         $listings = $query->get();

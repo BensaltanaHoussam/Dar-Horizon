@@ -20,18 +20,14 @@
                                 <input type="text" name="country" placeholder="Enter the country"
                                     class="w-full text-black p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-teal-500 focus:border-teal-500">
                             </div>
-                            <div class="space-y-2">
-                                <label class="block text-white font-medium">Available From</label>
-                                <input type="date" name="available_from"
-                                    class="w-full p-3 border text-black border-gray-300 rounded-lg focus:ring-2 focus:ring-teal-500 focus:border-teal-500">
-                            </div>
+                    
                         </div>
                         <button type="submit" class="bg-teal-500 text-white p-3 rounded-lg">Search</button>
                     </form>
 
                     <div>
                         <h2 class="text-white">Search Results</h2>
-                        @if(request()->has('country') || request()->has('available_from'))
+                        @if(request()->has('country'))
                             @if($listings->isEmpty())
                                 <p class="text-white">No listings found.</p>
                             @else
